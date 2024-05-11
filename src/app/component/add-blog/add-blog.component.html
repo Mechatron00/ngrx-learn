@@ -1,0 +1,28 @@
+<form
+  [formGroup]="blogForm"
+  (ngSubmit)="saveBlog()"
+  style="display: flex; align-items: center; flex-direction: column; gap: 1rem"
+>
+  <div>
+    <!-- <input pInputText aria-describedby="title-help"  /> -->
+    <input
+      id="title"
+      type="text"
+      pInputText
+      placeholder="Title"
+      formControlName="title"
+    />
+  </div>
+  <div>
+    <textarea
+      rows="5"
+      cols="30"
+      pInputTextarea
+      placeholder="Description"
+      formControlName="description"
+    ></textarea>
+  </div>
+  <div>
+    <p-button pRipple type="submit" label="save" severity="success"></p-button>
+  </div>
+</form>

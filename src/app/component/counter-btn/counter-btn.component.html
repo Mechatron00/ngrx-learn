@@ -1,0 +1,15 @@
+<!-- <h1 style="text-align: center">{{(counter$ | async)?.title}}</h1> -->
+<h1 style="text-align: center">{{title}}</h1>
+<h1 style="text-align: center">Counter application</h1>
+
+<div style="
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 1rem;
+  ">
+  
+    <p-button  pRipple (click)="OnIncrement()" label="Increment" severity="success"></p-button>
+    <p-button  pRipple (click)="OnDecrement()" label="Decrement" severity="danger"></p-button>
+    <p-button  pRipple (click)="OnReset()" label="Reset" severity="secondary"></p-button>
+</div>

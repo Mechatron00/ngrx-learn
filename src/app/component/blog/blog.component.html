@@ -1,0 +1,77 @@
+<div>
+  <p-button
+    pRipple
+    (click)="addBlog()"
+    label="Add blog"
+    severity="secondary"
+  ></p-button>
+  <hr />
+</div>
+<div *ngIf="!blogInfo.errorMessage">
+  <div
+    *ngFor="let item of blogInfo.blogList"
+    style="
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-direction: row;
+      box-shadow: 0 0 5px 0.5px black;
+      margin: 0 auto;
+      margin-bottom: 1rem;
+      padding: 0.8rem;
+      width: 500px;
+      border-radius: 0.5rem;
+    "
+  >
+    <div>
+      <h4>{{ item.title }}</h4>
+      <p>{{ item.description }}</p>
+    </div>
+    <div style="display: flex; gap: 1rem">
+      <p-button
+        pRipple
+        (click)="updateBlog(item.id)"
+        label="Edit"
+        severity="primary"
+        size="small"
+      >
+      </p-button>
+      <p-button
+        pRipple
+        (click)="deleteBlog(item.id)"
+        label="Delete"
+        severity="danger"
+        size="small"
+      >
+      </p-button>
+    </div>
+  </div>
+</div>
+
+<div
+  *ngIf="blogInfo.errorMessage"
+  style="
+    box-shadow: 0 0 5px 0.5px black;
+    margin: 0 auto;
+    margin-bottom: 1rem;
+    padding: 0.8rem;
+    width: 500px;
+    border-radius: 0.5rem;
+  "
+>
+  <h4 style="text-align: center; color: red">Error</h4>
+  <p style="text-align: center; color: red">{{ blogInfo.errorMessage }}</p>
+</div>
+<div
+  *ngIf="!blogInfo.blogList"
+  style="
+    box-shadow: 0 0 5px 0.5px black;
+    margin: 0 auto;
+    margin-bottom: 1rem;
+    padding: 0.8rem;
+    width: 500px;
+    border-radius: 0.5rem;
+  "
+>
+  <h4 style="text-align: center">No Blogs found</h4>
+</div>

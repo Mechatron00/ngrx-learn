@@ -1,0 +1,13 @@
+<div style="
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: column;
+    gap: 1rem;
+  ">
+  <div class="card flex justify-content-center">
+    <input type="number" pInputText placeholder="Ex:15" [(ngModel)]="value" />
+  </div>
+  <p-button pRipple click label="Increase" (onClick)="OnIncrement()" severity="success"></p-button>
+  <p-button pRipple click label="Decrease" (onClick)="OnDecrement()" severity="success"></p-button>
+</div>

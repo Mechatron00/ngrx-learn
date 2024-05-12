@@ -32,7 +32,7 @@ export class AddBlogComponent implements OnInit {
 
     this.route.params.subscribe((params) => {
       const id = parseInt(params['id']);
-      this.editId = id;
+      this.editId = parseInt(`${id}`);
     });
     
     

@@ -4,10 +4,12 @@ import {
   addBlog,
   addBlogSuccess,
   deleteBlogs,
+  deleteBlogsSuccess,
   loadBlog,
   loadBlogFail,
   loadBlogSuccess,
   updateBlog,
+  updateBlogSuccess,
 } from './blog.actions';
 import { BlogModel } from './blog.model';
 
@@ -53,12 +55,8 @@ const _blogReducer = createReducer(
       blogList: [...state.blogList, blog],
     };
   }),
-  on(updateBlog, (state, action) => {
-    const updatedBlog: BlogModel = {
-      id: action.blogInput.id,
-      title: action.blogInput.title,
-      description: action.blogInput.description,
-    };
+  on(updateBlogSuccess, (state, action) => {
+    const updatedBlog= {... action.blogInput}
     // let blog = state.blogList.map((blog) => {
     //   return blog.id === blogInput.id ? blogInput : blog;
     // });
@@ -74,7 +72,7 @@ const _blogReducer = createReducer(
       blogList: updatedBlogList,
     };
   }),
-  on(deleteBlogs, (state, action) => {
+  on(deleteBlogsSuccess, (state, action) => {
     const blogindex = state.blogList.findIndex(
       (blog: BlogModel) => blog.id === action.id
     );

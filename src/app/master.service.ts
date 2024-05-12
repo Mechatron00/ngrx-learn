@@ -23,4 +23,15 @@ createBlog(blogInput:BlogModel)
     })
   )
 }
+updateBlog(blogInput:BlogModel)
+{
+  console.log(blogInput);
+  
+ const id = `${blogInput.id}`
+  return this.http.put('http://localhost:3000/Blogs/'+id,blogInput)
+}
+deleteBlog(blogId:number)
+{
+  return this.http.delete('http://localhost:3000/Blogs/'+blogId)
+}
 }

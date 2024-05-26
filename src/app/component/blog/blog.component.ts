@@ -4,28 +4,38 @@ import { BlogModel, Blogs } from '../../shared/store/Blog/blog.model';
 import { getBlog, getBlogInfo } from '../../shared/store/Blog/blog.selector';
 import { AppStateModel } from '../../shared/store/Global/AppState.model';
 import { Router } from '@angular/router';
+import { Message, MessageService } from 'primeng/api';
 import {
   deleteBlogs,
   loadBlog,
   loadBlogSuccess,
+  
 } from '../../shared/store/Blog/blog.actions';
+import { loadSpinner } from '../../shared/store/Global/App.actions';
 
 @Component({
   selector: 'app-blog',
   templateUrl: './blog.component.html',
   styleUrls: ['./blog.component.css'],
+  providers: [MessageService]
 })
 export class BlogComponent implements OnInit {
-  constructor(private store: Store<AppStateModel>, private router: Router) {}
+  constructor(private store: Store<AppStateModel>, private router: Router,private messageService: MessageService) {}
   blog!: BlogModel[];
-
+  // messages!: Message[];
   blogInfo!: Blogs;
   ngOnInit() {
-    this.store.dispatch(loadBlog());
-    this.store.select(getBlogInfo).subscribe((data) => {
+    this.store.dispatch(loadSpinner({isLoaded:true}))
+    setTimeout(() => {
+      this.store.dispatch(loadBlog());
+      this.store.dispatch(loadSpinner({isLoaded:false}))
+     
+    }, 2000);
+    this.store.select(getBlogInfo).subscribe((data:any) => {
       console.log(data);
       this.blogInfo = data;
     });
+  
   }
 
   addBlog() {
@@ -35,7 +45,19 @@ export class BlogComponent implements OnInit {
     this.router.navigate([`updateblog/${id}`]);
   }
   deleteBlog(id: number) {
-    console.log(id);
-    this.store.dispatch(deleteBlogs({ id: id }));
+    if (confirm("Are you sure want to delete?")) {
+      this.store.dispatch(loadSpinner({isLoaded:true}))
+      setTimeout(() => {
+        this.store.dispatch(deleteBlogs({ id: id }));
+        this.store.dispatch(loadSpinner({isLoaded:false}))
+      }, 1000);
+     
+      // this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Blog deleted.',life:2 });
+      // this.messages = [
+       
+      //   { severity: 'success', detail: 'Blog deleted',life:2000,sticky:true, },
+      // ]
+    }
+   
   }
 }

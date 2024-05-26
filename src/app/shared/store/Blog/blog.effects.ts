@@ -9,12 +9,14 @@ import {
   loadBlog,
   loadBlogFail,
   loadBlogSuccess,
+  
   updateBlog,
   updateBlogSuccess,
 } from './blog.actions';
-import { catchError, EMPTY, exhaustMap, map, of } from 'rxjs';
+import { catchError, EMPTY, exhaustMap, map, of, switchMap } from 'rxjs';
 import { MasterService } from '../../../master.service';
 import { BlogModel } from './blog.model';
+import { loadSpinner, showAlert } from '../Global/App.actions';
 
 @Injectable()
 export class BlogEffects {
@@ -29,7 +31,10 @@ export class BlogEffects {
             return loadBlogSuccess({ blogList: data });
           }),
           catchError((_error) =>
-            of(loadBlogFail({ errorMessage: _error.message }))
+            of(
+              loadBlogFail({ errorMessage: _error.message }),
+              loadSpinner({ isLoaded: false })
+            )
           )
         );
       })
@@ -38,46 +43,66 @@ export class BlogEffects {
   _AddBlog = createEffect(() =>
     this.actions$.pipe(
       ofType(addBlog),
-      exhaustMap((action) => {
-        return this.service.createBlog(action.blogInput).pipe(
-          map((data) => {
-            return addBlogSuccess({ blogInput: data as BlogModel });
-          }),
+      switchMap((action) =>
+        this.service.createBlog(action.blogInput).pipe(
+          switchMap((data) =>
+            of(
+              addBlogSuccess({ blogInput: data as BlogModel }),
+
+              showAlert({ message: 'Blog created successfully' })
+            )
+          ),
           catchError((_error) =>
-            of(loadBlogFail({ errorMessage: _error.message }))
+            of(
+              loadBlogFail({ errorMessage: _error.message }),
+              loadSpinner({ isLoaded: false })
+            )
           )
-        );
-      })
+        )
+      )
     )
   );
   _UpdateBlog = createEffect(() =>
     this.actions$.pipe(
       ofType(updateBlog),
-      exhaustMap((action) => {
-        return this.service.updateBlog(action.blogInput).pipe(
-          map(() => {
-            return updateBlogSuccess({ blogInput: action.blogInput });
-          }),
+      switchMap((action) =>
+        this.service.updateBlog(action.blogInput).pipe(
+          switchMap(() =>
+            of(
+              updateBlogSuccess({ blogInput: action.blogInput }),
+              showAlert({ message: 'Blog updated successfully.' })
+            )
+          ),
           catchError((_error) =>
-            of(loadBlogFail({ errorMessage: _error.message }))
+            of(
+              loadBlogFail({ errorMessage: _error.message }),
+              showAlert({ message: 'Error occured.' }),
+              loadSpinner({ isLoaded: false })
+            )
           )
-        );
-      })
+        )
+      )
     )
   );
   _DeleteBlog = createEffect(() =>
     this.actions$.pipe(
       ofType(deleteBlogs),
-      exhaustMap((action) => {
-        return this.service.deleteBlog(action.id).pipe(
-          map(() => {
-            return deleteBlogsSuccess({ id: action.id });
-          }),
+      switchMap((action) =>
+        this.service.deleteBlog(action.id).pipe(
+          switchMap(() =>
+            of(
+              deleteBlogsSuccess({ id: action.id }),
+              showAlert({ message: 'Deleted successfully' })
+            )
+          ),
           catchError((_error) =>
-            of(loadBlogFail({ errorMessage: _error.message }))
+            of(
+              loadBlogFail({ errorMessage: _error.message }),
+              loadSpinner({ isLoaded: false })
+            )
           )
-        );
-      })
+        )
+      )
     )
   );
 }

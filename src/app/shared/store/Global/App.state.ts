@@ -1,7 +1,10 @@
 import { blogReducer } from "../Blog/blog.reducer";
 import { counterReducer } from "../counter.reducer";
+import { AppReducer } from "./app.reducer";
 
 export const AppState={
-   counter:counterReducer,
-   blog:blogReducer 
+  counter:counterReducer,
+   blog:blogReducer,
+   app:AppReducer
+
 }

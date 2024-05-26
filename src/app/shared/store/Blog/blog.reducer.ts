@@ -8,6 +8,7 @@ import {
   loadBlog,
   loadBlogFail,
   loadBlogSuccess,
+  
   updateBlog,
   updateBlogSuccess,
 } from './blog.actions';
@@ -20,13 +21,17 @@ export function blogReducer(state: any, action: any) {
 const _blogReducer = createReducer(
   blogState,
   on(loadBlog, (state) => {
-    return state;
+    return {
+      ...state,
+      isLoaded:false
+    }
   }),
   on(loadBlogSuccess, (state, action) => {
     return {
       ...state,
       blogList: [...action.blogList],
       errorMessage: '',
+      isLoaded:false
     };
   }),
   on(loadBlogFail, (state, action) => {
@@ -34,6 +39,7 @@ const _blogReducer = createReducer(
       ...state,
       blogList: [],
       errorMessage: action.errorMessage,
+      isLoaded:false
     };
   }),
   // on(addBlog, (state, action) => {
@@ -53,6 +59,7 @@ const _blogReducer = createReducer(
     return {
       ...state,
       blogList: [...state.blogList, blog],
+      isLoaded:false
     };
   }),
   on(updateBlogSuccess, (state, action) => {
@@ -70,6 +77,7 @@ const _blogReducer = createReducer(
     return {
       ...state,
       blogList: updatedBlogList,
+      isLoaded:false
     };
   }),
   on(deleteBlogsSuccess, (state, action) => {
@@ -81,6 +89,14 @@ const _blogReducer = createReducer(
     return {
       ...state,
       blogList: updatedBlogList,
+      isLoaded:false
     };
-  })
+  }),
+  // on(loadSpinner, (state, action) => {
+    
+  //   return {
+  //     ...state,
+  //     isLoaded:action.isLoaded
+  //   };
+  // })
 );

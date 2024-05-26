@@ -1,3 +1,5 @@
+<p-toast position="top-left"  />
+
 <div>
   <p-button
     pRipple
@@ -6,8 +8,11 @@
     severity="secondary"
   ></p-button>
   <hr />
+
 </div>
-<div *ngIf="!blogInfo.errorMessage">
+<!-- <p-messages [(value)]="messages" [enableService]="false" closable="true" /> -->
+<app-loading-spinner></app-loading-spinner>
+<div *ngIf="!blogInfo.errorMessage && !blogInfo.isLoaded">
   <div
     *ngFor="let item of blogInfo.blogList"
     style="
@@ -15,7 +20,7 @@
       justify-content: space-between;
       align-items: center;
       flex-direction: row;
-      box-shadow: 0 0 5px 0.5px black;
+      box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
       margin: 0 auto;
       margin-bottom: 1rem;
       padding: 0.8rem;
@@ -23,6 +28,7 @@
       border-radius: 0.5rem;
     "
   >
+ 
     <div>
       <h4>{{ item.title }}</h4>
       <p>{{ item.description }}</p>

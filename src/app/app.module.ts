@@ -11,7 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { blogReducer } from './shared/store/Blog/blog.reducer';
 import { AppState } from './shared/store/Global/App.state';
-import { primeng } from './primeng.module';
+import { PrimeNgModule } from './primeng.module';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { InputTextModule } from 'primeng/inputtext';
@@ -21,6 +21,13 @@ import { BlogComponent } from './component/blog/blog.component';
 import { HttpClientModule } from '@angular/common/http';
 import { EffectsModule } from '@ngrx/effects';
 import {  BlogEffects } from './shared/store/Blog/blog.effects';
+import { ToastModule } from 'primeng/toast';
+import { MessagesModule } from 'primeng/messages';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { AppEffect } from './shared/store/Global/App.effects';
+import { LoadingSpinnerComponent } from './component/loading-spinner/loading-spinner.component';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { GlobalState } from './shared/store/Global/global.state';
 
 @NgModule({
   declarations: [
@@ -29,7 +36,8 @@ import {  BlogEffects } from './shared/store/Blog/blog.effects';
     CounterDisplayComponent,
     CustomCounterComponent,
     AddBlogComponent,
-    BlogComponent
+    BlogComponent,
+    LoadingSpinnerComponent
   ],
   imports: [
     BrowserModule,
@@ -41,12 +49,18 @@ import {  BlogEffects } from './shared/store/Blog/blog.effects';
     InputTextModule,
     InputTextareaModule,
     HttpClientModule,
+    PrimeNgModule,
+    ToastModule,
+    MessagesModule,
+    MatProgressSpinnerModule,
     //StoreModule.forRoot({counter:counterReducer,blog:blogReducer}),
     StoreModule.forRoot(AppState),
     StoreDevtoolsModule.instrument({ maxAge: false, logOnly: !isDevMode() }),
-    EffectsModule.forRoot([BlogEffects])
+    EffectsModule.forRoot([BlogEffects,AppEffect])
   ],
-  providers: [],
+  providers: [
+    provideAnimationsAsync()
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

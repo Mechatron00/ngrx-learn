@@ -32,7 +32,7 @@ export class AddBlogComponent implements OnInit {
 
     this.route.params.subscribe((params) => {
       const id = parseInt(params['id']);
-      this.editId = parseInt(`${id}`);
+      this.editId = id;
     });
     
     
@@ -57,6 +57,7 @@ export class AddBlogComponent implements OnInit {
     if (this.blogForm.valid) {
       const blog = this.blogForm.getRawValue();
 
+      
       if (this.isEdit) {
         this.store.dispatch(updateBlog({ blogInput: blog }));
         console.log('edit blog invoked');
